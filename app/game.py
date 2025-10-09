@@ -32,20 +32,36 @@ def numero_a_convertir(dificultad):
     return numero, base
 
 
+# class app:
 def main():
-    print("Bienvenido al juego de conversiones entre bases numéricas!")
+    global bases
+    print("Bienvenido al juego de conversiones entre bases numericas!")
     dificultad = seleccionar_dificultad()
 
-    dificultad_str = ["Fácil", "Normal", "Difícil", "Imposible"][dificultad - 1]
-    print(f"!!! La dificultad seleccionada fue: {dificultad_str} !!!")
+    if dificultad == 1:
+        dificultad_str = "Fácil"
+    elif dificultad == 2:
+        dificultad_str = "Normal"
+    elif dificultad == 3:
+        dificultad_str = "Difícil"
+    elif dificultad == 4:
+        dificultad_str = "Imposible"
+
+    print(f"!!!!La Dificultad seleccionada fue: {dificultad_str}!!!")
 
     numero, base_inicial = numero_a_convertir(dificultad)
-    base_final = random.choice([b for b in bases if b != base_inicial])
+
+    while True:
+        base_final = random.choice(bases)
+        if base_final != base_inicial:
+            break
 
     numero_final = convertir_numero(numero, base_inicial, base_final)
-    numero_usuario = input(f"Convierte el número a base {base_final}: ")
+    print(numero_final)
 
-    if numero_usuario.strip().lower() == numero_final.lower():
-        print("✅ ¡Correcto!")
+    numero_usuario = input(f"Conviertelo a base {base_final}:")
+
+    if numero_usuario == numero_final:
+        print("Bien")
     else:
-        print(f"❌ Incorrecto. La respuesta correcta era: {numero_final}")
+        print("Mal")
