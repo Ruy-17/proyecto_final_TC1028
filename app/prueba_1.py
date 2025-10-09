@@ -93,8 +93,10 @@ def main():
 
     numero, base_inicial = numero_a_convertir(dificultad)
 
-    while base_final != base_inicial:
+    while True:
         base_final = random.choice(bases)
+        if base_final != base_inicial:
+            break
 
     numero_final = convertir_numero(numero, base_inicial, base_final)
     print(numero_final)
