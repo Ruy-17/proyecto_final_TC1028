@@ -1,3 +1,3 @@
-from app.prueba_1 import main
+from app.game import main
 
 main()
