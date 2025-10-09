@@ -1,4 +1,5 @@
 import random
+from timedinput import timedinput
 from app.data import BASES as bases
 from app.utils import (
     generador_de_numeros,
@@ -40,12 +41,16 @@ def main():
 
     if dificultad == 1:
         dificultad_str = "Fácil"
+        tiempo = 60
     elif dificultad == 2:
         dificultad_str = "Normal"
+        tiempo = 45
     elif dificultad == 3:
         dificultad_str = "Difícil"
+        tiempo = 35
     elif dificultad == 4:
         dificultad_str = "Imposible"
+        tiempo = 30
 
     print(f"!!!!La Dificultad seleccionada fue: {dificultad_str}!!!")
 
@@ -57,11 +62,15 @@ def main():
             break
 
     numero_final = convertir_numero(numero, base_inicial, base_final)
-    print(numero_final)
 
-    numero_usuario = input(f"Conviertelo a base {base_final}:")
+    print(f"Tienes {tiempo} segundos para responder")
+
+    print(numero_final)
+    numero_usuario = timedinput(f"Conviertelo a base {base_final}:", timeout=tiempo, default="notime")
 
     if numero_usuario == numero_final:
         print("Bien")
+    elif numero_usuario == "notime":
+        print("Se te acabó el tiempo")
     else:
-        print("Mal")
+        print("El número es incorrecto")
