@@ -1,7 +1,6 @@
 # Base 1 vs Base 2
 import random
-
-bases = [10, 2, 8, 16]
+from app.data import BASES as bases
 
 
 def generador_de_numeros(base, digitos_inicial, digitos_final):
