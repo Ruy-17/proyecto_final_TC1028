@@ -4,4 +4,5 @@ Proyecto final para Pensamiento Computacional para Ingeniería - Juego de Base v
 Librerías requeridas:
 
 random
+
 timedinput
