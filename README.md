@@ -6,3 +6,7 @@ Librerías requeridas:
 random
 
 timedinput
+
+readchar
+
+Todas se instalan con "pip"
