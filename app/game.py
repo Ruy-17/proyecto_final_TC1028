@@ -36,9 +36,7 @@ def numero_a_convertir(dificultad):
 
     global _baseInicial
     _baseInicial = base_str.split("(")[1].split(")")[0]
-
-    print(f"Tu número está en base: {base_str} y es: {numero}")
-    return numero, base
+    return numero, base, base_str
 
 
 # class app:
@@ -63,7 +61,7 @@ def main():
 
     print(f"!!!!La Dificultad seleccionada fue: {dificultad_str}!!!")
 
-    numero, base_inicial = numero_a_convertir(dificultad)
+    numero, base_inicial, base_str = numero_a_convertir(dificultad)
 
     while True:
         _baseFinal = random.choice(bases)
@@ -71,6 +69,8 @@ def main():
             break
 
     loading_screen(_baseInicial, _baseFinal)
+
+    print(f"Tu número está en base: {base_str} y es: {numero}")
 
     numero_final = convertir_numero(numero, base_inicial, _baseFinal)
 
