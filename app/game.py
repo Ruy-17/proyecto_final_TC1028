@@ -6,6 +6,10 @@ from app.utils import (
     convertir_numero,
     seleccionar_dificultad,
 )
+from app.assets import loading_screen
+
+_baseInicial = 0
+_baseFinal = 0
 
 
 def numero_a_convertir(dificultad):
@@ -28,6 +32,9 @@ def numero_a_convertir(dificultad):
         10: "Decimal (10)",
         16: "Hexadecimal (16)",
     }[base]
+
+    global _baseInicial
+    _baseInicial = base_str.split("(")[1].split(")")[0]
 
     print(f"Tu número está en base: {base_str} y es: {numero}")
     return numero, base
@@ -57,16 +64,20 @@ def main():
     numero, base_inicial = numero_a_convertir(dificultad)
 
     while True:
-        base_final = random.choice(bases)
-        if base_final != base_inicial:
+        _baseFinal = random.choice(bases)
+        if _baseFinal != base_inicial:
             break
 
-    numero_final = convertir_numero(numero, base_inicial, base_final)
+    loading_screen(_baseInicial, _baseFinal)
+
+    numero_final = convertir_numero(numero, base_inicial, _baseFinal)
 
     print(f"Tienes {tiempo} segundos para responder")
 
     print(numero_final)
-    numero_usuario = timedinput(f"Conviertelo a base {base_final}:", timeout=tiempo, default="notime")
+    numero_usuario = timedinput(
+        f"Conviertelo a base {_baseFinal}:", timeout=tiempo, default="notime"
+    )
 
     if numero_usuario == numero_final:
         print("Bien")
