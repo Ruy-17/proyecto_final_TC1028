@@ -5,6 +5,7 @@ from app.utils import (
     generador_de_numeros,
     convertir_numero,
     seleccionar_dificultad,
+    seleccionar_dificultad_ConFlechas,
 )
 from app.assets import loading_screen
 
@@ -44,7 +45,8 @@ def numero_a_convertir(dificultad):
 def main():
     global bases
     print("Bienvenido al juego de conversiones entre bases numericas!")
-    dificultad = seleccionar_dificultad()
+    # dificultad = seleccionar_dificultad()
+    dificultad = seleccionar_dificultad_ConFlechas()
 
     if dificultad == 1:
         dificultad_str = "Fácil"

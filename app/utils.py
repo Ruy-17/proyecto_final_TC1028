@@ -1,4 +1,6 @@
 import random
+import readchar
+from app.data import DIFICULTADES as opciones_dificultad
 # from app.data import BASES as bases
 
 
@@ -42,3 +44,31 @@ def seleccionar_dificultad():
                 print("Opción inválida. Intente de nuevo.")
         except ValueError:
             print("Error, ingrese un número entero del 1 al 4.")
+
+
+def seleccionar_dificultad_ConFlechas():
+    opciones = opciones_dificultad + ["Salir"]
+    indice = 0
+    while True:
+        print("\033c", end="")  # Limpiar pantalla
+
+        for i, opcion in enumerate(opciones):
+            if i == indice:
+                print(f"> {opcion}")
+            else:
+                print(f"  {opcion}")
+
+        tecla = readchar.readkey()
+
+        if tecla == readchar.key.UP:
+            indice = (indice - 1) % len(opciones)
+        elif tecla == readchar.key.DOWN:
+            indice = (indice + 1) % len(opciones)
+        elif tecla == readchar.key.ENTER:
+            print(f"Seleccionaste: {opciones[indice]}")
+            if opciones[indice] == "Salir":
+                break
+            input("Presiona Enter para continuar...")
+            break
+
+    return indice + 1  # Retorna 1 para Fácil, 2 para Normal, etc.
