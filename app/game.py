@@ -1,13 +1,18 @@
+import os
 import random
+import threading
+from readchar import config
 from timedinput import timedinput
-from app.data import BASES as bases
-from app.utils import (
+from app.Utils.Constants import BASES as bases, RECORD_FILE, DIFICULTADES as opciones_dificultad
+from app.Utils.utils import (
     generador_de_numeros,
     convertir_numero,
     seleccionar_dificultad,
     seleccionar_dificultad_ConFlechas,
+    mostrar_top5,
+    agregar_record
 )
-from app.assets import loading_screen
+from app.Utils.assets import loading_screen, time_con_thread, mostrar_titulo, separador, clear_screen
 
 _baseInicial = 0
 _baseFinal = 0
@@ -16,14 +21,13 @@ _baseFinal = 0
 def numero_a_convertir(dificultad):
     base = random.choice(bases)
 
-    if dificultad == 1:
-        digitos_inicial, digitos_final = 1, 1
-    elif dificultad == 2:
-        digitos_inicial, digitos_final = 1, 2
-    elif dificultad == 3:
-        digitos_inicial, digitos_final = 2, 3
-    else:
-        digitos_inicial, digitos_final = 3, 4
+    rangos = {
+        1: (1, 1),
+        2: (1, 2),
+        3: (2, 3),
+        4: (3, 4)
+    }
+    digitos_inicial, digitos_final = rangos[dificultad]
 
     numero = generador_de_numeros(base, digitos_inicial, digitos_final)
 
@@ -42,48 +46,77 @@ def numero_a_convertir(dificultad):
 # class app:
 def main():
     global bases
+    puntaje_total = 0
+    clear_screen()
+    mostrar_titulo()
     print("Bienvenido al juego de conversiones entre bases numericas!")
-    # dificultad = seleccionar_dificultad()
-    dificultad = seleccionar_dificultad_ConFlechas()
-
-    if dificultad == 1:
-        dificultad_str = "Fácil"
-        tiempo = 60
-    elif dificultad == 2:
-        dificultad_str = "Normal"
-        tiempo = 45
-    elif dificultad == 3:
-        dificultad_str = "Difícil"
-        tiempo = 35
-    elif dificultad == 4:
-        dificultad_str = "Imposible"
-        tiempo = 30
-
-    print(f"!!!!La Dificultad seleccionada fue: {dificultad_str}!!!")
-
-    numero, base_inicial, base_str = numero_a_convertir(dificultad)
+    mostrar_top5()
+    nombre = input("Ingresa tu nombre: ").strip() or "Anónimo"
 
     while True:
-        _baseFinal = random.choice(bases)
-        if _baseFinal != base_inicial:
+        dificultad = seleccionar_dificultad_ConFlechas()
+        if dificultad == 0:
+            clear_screen()
+            print("Saliendo del juego...")
             break
 
-    loading_screen(_baseInicial, _baseFinal)
+        clear_screen()
 
-    print(f"Tu número está en base: {base_str} y es: {numero}")
+        # Config de la dificultad
+        config = opciones_dificultad[dificultad]
+        dificultad_str = config["nombre"]
+        tiempo = config["tiempo"]
+        puntos = config["puntos"]
 
-    numero_final = convertir_numero(numero, base_inicial, _baseFinal)
+        print(f"\n!!!!La Dificultad seleccionada fue: {dificultad_str}!!!")
 
-    print(f"Tienes {tiempo} segundos para responder")
+        # Generar número a convertir
+        numero, base_inicial, base_str = numero_a_convertir(dificultad)
+        while True:
+            _baseFinal = random.choice(bases)
+            if _baseFinal != base_inicial:
+                break
 
-    print(numero_final)
-    numero_usuario = timedinput(
-        f"Conviertelo a base {_baseFinal}:", timeout=tiempo, default="notime"
-    )
+        loading_screen(_baseInicial, _baseFinal)
+        print(f"Tu número está en base: {base_str} y es: {numero}")
 
-    if numero_usuario == numero_final:
-        print("Bien")
-    elif numero_usuario == "notime":
-        print("Se te acabó el tiempo")
-    else:
-        print("El número es incorrecto")
+        numero_final = convertir_numero(numero, base_inicial, _baseFinal)
+        print(f"\nConviértelo a base {_baseFinal}: ", end="", flush=True)
+        print(f"\nTienes {tiempo} segundos para responder\n")
+
+        stop_event = threading.Event()
+        hilo_tiempo = threading.Thread(
+            target=time_con_thread, args=(tiempo, stop_event))
+        hilo_tiempo.start()
+
+        try:
+            numero_usuario = input().strip()
+        except KeyboardInterrupt:
+            print("\nSe acabó el juego.")
+            print(f"La respuesta correcta era: {numero_final}")
+            stop_event.set()
+            break
+
+        stop_event.set()
+        hilo_tiempo.join()
+
+        if stop_event.is_set() and numero_usuario == "":
+            print("⏰ Se te acabó el tiempo.")
+        elif numero_usuario == numero_final:
+            print("✅ Correcto, bien hecho!")
+            puntaje_total += puntos
+        else:
+            print(f"❌ Incorrecto. La respuesta era: {numero_final}")
+
+        print(f"\n🏅 Puntaje actual: {puntaje_total} pts\n")
+
+        # Preguntar si quiere seguir
+        continuar = input("¿Quieres jugar otra ronda? (y/n): ").strip().lower()
+        if continuar != "y":
+            clear_screen()
+            break
+
+    clear_screen()
+    print(f"\n🎉 Juego terminado. Puntaje total: {puntaje_total} pts")
+    agregar_record(nombre, puntaje_total)
+    mostrar_top5()
