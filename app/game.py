@@ -1,4 +1,5 @@
 import random
+import threading
 from timedinput import timedinput
 from app.data import BASES as bases
 from app.utils import (
@@ -7,7 +8,7 @@ from app.utils import (
     seleccionar_dificultad,
     seleccionar_dificultad_ConFlechas,
 )
-from app.assets import loading_screen
+from app.assets import loading_screen, time_con_thread
 
 _baseInicial = 0
 _baseFinal = 0
@@ -58,6 +59,9 @@ def main():
     elif dificultad == 4:
         dificultad_str = "Imposible"
         tiempo = 30
+    else:
+        print("Saliendo del juego...")
+        return
 
     print(f"!!!!La Dificultad seleccionada fue: {dificultad_str}!!!")
 
@@ -74,16 +78,41 @@ def main():
 
     numero_final = convertir_numero(numero, base_inicial, _baseFinal)
 
-    print(f"Tienes {tiempo} segundos para responder")
+    print(f"Tienes {tiempo} segundos para responder\n")
 
-    print(numero_final)
-    numero_usuario = timedinput(
-        f"Conviertelo a base {_baseFinal}:", timeout=tiempo, default="notime"
-    )
+    stop_event = threading.Event()
 
-    if numero_usuario == numero_final:
-        print("Bien")
-    elif numero_usuario == "notime":
-        print("Se te acabó el tiempo")
+    print(f"Conviértelo a base {_baseFinal}: ", end="", flush=True)
+    hilo_tiempo = threading.Thread(
+        target=time_con_thread, args=(tiempo, stop_event))
+    hilo_tiempo.start()
+
+    try:
+        numero_usuario = input().strip()
+    except KeyboardInterrupt:
+        print("\nSe acabó el juego.")
+        print(f"La respuesta correcta era: {numero_final}")
+        stop_event.set()
+        return
+
+    stop_event.set()
+    hilo_tiempo.join()
+
+    if stop_event.is_set() and numero_usuario == "":
+        print("⏰ Se te acabó el tiempo.")
+    elif numero_usuario == numero_final:
+        print("✅ Correcto, bien hecho!")
     else:
-        print("El número es incorrecto")
+        print(f"❌ Incorrecto. La respuesta era: {numero_final}")
+
+    # print(numero_final)
+    # numero_usuario = timedinput(
+    #     f"Conviertelo a base {_baseFinal}:", timeout=tiempo, default="notime"
+    # )
+
+    # if numero_usuario == numero_final:
+    #     print("Bien")
+    # elif numero_usuario == "notime":
+    #     print("Se te acabó el tiempo")
+    # else:
+    #     print("El número es incorrecto")

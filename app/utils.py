@@ -70,5 +70,6 @@ def seleccionar_dificultad_ConFlechas():
                 break
             input("Presiona Enter para continuar...")
             break
+    print("\033c", end="")  # Limpiar pantalla al salir
 
-    return indice + 1  # Retorna 1 para Fácil, 2 para Normal, etc.
+    return indice + 1
