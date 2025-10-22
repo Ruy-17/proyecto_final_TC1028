@@ -36,3 +36,7 @@ def time_con_thread(segundos, stop_event):
         time.sleep(1)
     print("\n🕒 ¡Se acabó el tiempo!\n")
     stop_event.set()
+
+
+def clear_screen():
+    print("\033[H\033[J", end="")

@@ -12,7 +12,7 @@ from app.Utils.utils import (
     mostrar_top5,
     agregar_record
 )
-from app.assets import loading_screen, time_con_thread
+from app.Utils.assets import loading_screen, time_con_thread, mostrar_titulo, separador, clear_screen
 
 _baseInicial = 0
 _baseFinal = 0
@@ -47,6 +47,8 @@ def numero_a_convertir(dificultad):
 def main():
     global bases
     puntaje_total = 0
+    clear_screen()
+    mostrar_titulo()
     print("Bienvenido al juego de conversiones entre bases numericas!")
     mostrar_top5()
     nombre = input("Ingresa tu nombre: ").strip() or "Anónimo"
@@ -54,8 +56,11 @@ def main():
     while True:
         dificultad = seleccionar_dificultad_ConFlechas()
         if dificultad == 0:
+            clear_screen()
             print("Saliendo del juego...")
             break
+
+        clear_screen()
 
         # Config de la dificultad
         config = opciones_dificultad[dificultad]
@@ -106,10 +111,12 @@ def main():
         print(f"\n🏅 Puntaje actual: {puntaje_total} pts\n")
 
         # Preguntar si quiere seguir
-        continuar = input("¿Quieres jugar otra ronda? (s/n): ").strip().lower()
-        if continuar != "s":
+        continuar = input("¿Quieres jugar otra ronda? (y/n): ").strip().lower()
+        if continuar != "y":
+            clear_screen()
             break
 
+    clear_screen()
     print(f"\n🎉 Juego terminado. Puntaje total: {puntaje_total} pts")
     agregar_record(nombre, puntaje_total)
     mostrar_top5()
