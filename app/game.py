@@ -1,8 +1,8 @@
 import random
 import threading
 from timedinput import timedinput
-from app.data import BASES as bases
-from app.utils import (
+from app.Utils.data import BASES as bases
+from app.Utils.utils import (
     generador_de_numeros,
     convertir_numero,
     seleccionar_dificultad,
@@ -44,7 +44,6 @@ def numero_a_convertir(dificultad):
 def main():
     global bases
     print("Bienvenido al juego de conversiones entre bases numericas!")
-    # dificultad = seleccionar_dificultad()
     dificultad = seleccionar_dificultad_ConFlechas()
 
     if dificultad == 1:
@@ -77,12 +76,11 @@ def main():
     print(f"Tu número está en base: {base_str} y es: {numero}")
 
     numero_final = convertir_numero(numero, base_inicial, _baseFinal)
-
-    print(f"Tienes {tiempo} segundos para responder\n")
+    print(f"Conviértelo a base {_baseFinal}: ", end="", flush=True)
+    print(f"\nTienes {tiempo} segundos para responder\n")
 
     stop_event = threading.Event()
 
-    print(f"Conviértelo a base {_baseFinal}: ", end="", flush=True)
     hilo_tiempo = threading.Thread(
         target=time_con_thread, args=(tiempo, stop_event))
     hilo_tiempo.start()
@@ -104,15 +102,3 @@ def main():
         print("✅ Correcto, bien hecho!")
     else:
         print(f"❌ Incorrecto. La respuesta era: {numero_final}")
-
-    # print(numero_final)
-    # numero_usuario = timedinput(
-    #     f"Conviertelo a base {_baseFinal}:", timeout=tiempo, default="notime"
-    # )
-
-    # if numero_usuario == numero_final:
-    #     print("Bien")
-    # elif numero_usuario == "notime":
-    #     print("Se te acabó el tiempo")
-    # else:
-    #     print("El número es incorrecto")
