@@ -53,8 +53,9 @@ def main():
     mostrar_top5()
     nombre = input("Ingresa tu nombre: ").strip() or "Anónimo"
 
+    dificultad = seleccionar_dificultad_ConFlechas()
     while True:
-        dificultad = seleccionar_dificultad_ConFlechas()
+        
         if dificultad == 0:
             clear_screen()
             print("Saliendo del juego...")
@@ -105,18 +106,16 @@ def main():
         elif numero_usuario == numero_final:
             print("✅ Correcto, bien hecho!")
             puntaje_total += puntos
+            print(f"\n🏅 Puntaje actual: {puntaje_total} pts\n")
+            input("Presiona Enter para continuar...")
+            clear_screen()
         else:
             print(f"❌ Incorrecto. La respuesta era: {numero_final}")
+            print(f"\n🎉 Juego terminado. Puntaje total: {puntaje_total} pts")
+            agregar_record(nombre, puntaje_total)
+            mostrar_top5()
+            continuar = input("¿Quieres de nuevo (y/n): ").strip().lower()
+            if continuar != "y":
+                clear_screen()
+                break
 
-        print(f"\n🏅 Puntaje actual: {puntaje_total} pts\n")
-
-        # Preguntar si quiere seguir
-        continuar = input("¿Quieres jugar otra ronda? (y/n): ").strip().lower()
-        if continuar != "y":
-            clear_screen()
-            break
-
-    clear_screen()
-    print(f"\n🎉 Juego terminado. Puntaje total: {puntaje_total} pts")
-    agregar_record(nombre, puntaje_total)
-    mostrar_top5()
