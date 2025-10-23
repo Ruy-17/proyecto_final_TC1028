@@ -13,7 +13,6 @@ from app.Utils.utils import (
     agregar_record
 )
 from app.Utils.assets import loading_screen, time_con_thread, mostrar_titulo, separador, clear_screen
-
 _baseInicial = 0
 _baseFinal = 0
 
@@ -55,7 +54,7 @@ def main():
 
     dificultad = seleccionar_dificultad_ConFlechas()
     while True:
-        
+
         if dificultad == 0:
             clear_screen()
             print("Saliendo del juego...")
@@ -88,10 +87,11 @@ def main():
         stop_event = threading.Event()
         hilo_tiempo = threading.Thread(
             target=time_con_thread, args=(tiempo, stop_event))
+        print("\n")
         hilo_tiempo.start()
 
         try:
-            numero_usuario = input().strip()
+            numero_usuario = input("Respuesta: ").strip()
         except KeyboardInterrupt:
             print("\nSe acabó el juego.")
             print(f"La respuesta correcta era: {numero_final}")
@@ -118,4 +118,3 @@ def main():
             if continuar != "y":
                 clear_screen()
                 break
-
