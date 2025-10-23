@@ -2,7 +2,6 @@ import os
 import random
 import threading
 from readchar import config
-from timedinput import timedinput
 from app.Utils.Constants import BASES as bases, RECORD_FILE, DIFICULTADES as opciones_dificultad
 from app.Utils.utils import (
     generador_de_numeros,
