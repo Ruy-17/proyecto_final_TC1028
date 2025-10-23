@@ -1,7 +1,6 @@
 import random
 import readchar
 from app.Utils.Constants import DIFICULTADES as opciones_dificultad
-import json
 import os
 from datetime import datetime
 
