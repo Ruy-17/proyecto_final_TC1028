@@ -9,4 +9,6 @@ timedinput
 
 readchar
 
+threading
+
 Todas se instalan con "pip"
