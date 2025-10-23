@@ -5,8 +5,6 @@ Librerías requeridas:
 
 random
 
-timedinput
-
 readchar
 
 threading
