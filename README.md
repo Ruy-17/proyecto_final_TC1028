@@ -9,4 +9,8 @@ readchar
 
 threading
 
+time
+
+datetime
+
 Todas se instalan con "pip"
