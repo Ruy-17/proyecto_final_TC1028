@@ -8,6 +8,7 @@ from datetime import datetime
 RECORDS_FILE = os.path.join(os.path.dirname(__file__), "logs.txt")
 
 
+# Generador de números aleatorios en diferentes bases
 def generador_de_numeros(base, digitos_inicial, digitos_final):
     extension = 10**digitos_final
     numero_decimal = random.randint(10 ** (digitos_inicial - 1), extension - 1)
@@ -22,6 +23,7 @@ def generador_de_numeros(base, digitos_inicial, digitos_final):
         return str(numero_decimal)
 
 
+# Conversor de números entre bases
 def convertir_numero(numero, base_inicial, base_final):
     numero_decimal = int(numero, base_inicial)
 
@@ -35,21 +37,7 @@ def convertir_numero(numero, base_inicial, base_final):
         return str(numero_decimal)
 
 
-def seleccionar_dificultad():
-    while True:
-        try:
-            print("¡Seleccione la dificultad!")
-            dificultad = int(
-                input("Fácil (1) - Normal (2) - Difícil (3) - Imposible (4): ")
-            )
-            if dificultad in [1, 2, 3, 4]:
-                return dificultad
-            else:
-                print("Opción inválida. Intente de nuevo.")
-        except ValueError:
-            print("Error, ingrese un número entero del 1 al 4.")
-
-
+# Selección de dificultad con la funcion de moverse con las flechas y el ENTER
 def seleccionar_dificultad_ConFlechas():
     opciones = [v["nombre"] for v in opciones_dificultad.values()] + ["Salir"]
     indice = 0
@@ -77,8 +65,9 @@ def seleccionar_dificultad_ConFlechas():
             return indice + 1
 
 
+# Gestión de records, para que el usuario pueda ver los mejores puntajes
 def cargar_records():
-    """Carga los records desde el archivo TXT."""
+    # Carga los records desde el archivo TXT.
     if not os.path.exists(RECORDS_FILE):
         return []
     records = []
@@ -99,16 +88,16 @@ def cargar_records():
     return sorted(records, key=lambda x: x["puntaje"], reverse=True)[:5]
 
 
+# Guarda los records en el archivo TXT.
 def guardar_records(records):
-    """Guarda los records en el archivo TXT."""
     with open(RECORDS_FILE, "w") as f:
         for r in records:
             linea = f"{r['nombre']}|{r['puntaje']}|{r['fecha']}\n"
             f.write(linea)
 
 
+# Agrega un nuevo record y mantiene solo los 5 mejores.
 def agregar_record(nombre, puntaje):
-    """Agrega un nuevo record y mantiene solo los 5 mejores."""
     records = cargar_records()
     records.append({
         "nombre": nombre,
@@ -120,8 +109,8 @@ def agregar_record(nombre, puntaje):
     guardar_records(records)
 
 
+# Muestra los 5 mejores puntajes.
 def mostrar_top5():
-    """Muestra los 5 mejores puntajes."""
     records = cargar_records()
     print("\n🏆  TOP 5 JUGADORES  🏆")
     print("=======================")
