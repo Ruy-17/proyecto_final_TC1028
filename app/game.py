@@ -15,6 +15,8 @@ from app.Utils.assets import loading_screen, time_con_thread, mostrar_titulo, se
 _baseInicial = 0
 _baseFinal = 0
 
+# Genera el número a convertir según la dificultad seleccionada
+
 
 def numero_a_convertir(dificultad):
     base = random.choice(bases)
@@ -41,7 +43,7 @@ def numero_a_convertir(dificultad):
     return numero, base, base_str
 
 
-# class app:
+# Función main del juego, donde se concentra toda la lógica del mismo
 def main():
     global bases
     puntaje_total = 0

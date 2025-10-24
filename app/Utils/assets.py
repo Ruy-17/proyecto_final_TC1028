@@ -2,6 +2,9 @@ import time
 import sys
 
 
+# Utilidades visuales para el juego de conversiones entre bases numéricas
+
+
 def mostrar_titulo():
     print("\033[1;34m")  # azul negrita
     print("==============================")
@@ -31,6 +34,8 @@ def separador(tamano=40):
 #     print("\n🕒 ¡Se acabó el tiempo!\n")
 #     stop_event.set()
 
+
+# Funcion para ver el timer en vivo en la terminal, para que el usuario siempre sepa cuanto tiempo le queda
 def time_con_thread(segundos, stop_event):
     for i in range(segundos, 0, -1):
         if stop_event.is_set():
@@ -53,5 +58,6 @@ def time_con_thread(segundos, stop_event):
     stop_event.set()
 
 
+# Función para limpiar la pantalla de la terminal
 def clear_screen():
     print("\033[H\033[J", end="")
