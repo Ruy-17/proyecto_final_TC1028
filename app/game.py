@@ -6,7 +6,6 @@ from app.Utils.Constants import BASES as bases, RECORD_FILE, DIFICULTADES as opc
 from app.Utils.utils import (
     generador_de_numeros,
     convertir_numero,
-    seleccionar_dificultad,
     seleccionar_dificultad_ConFlechas,
     mostrar_top5,
     agregar_record
